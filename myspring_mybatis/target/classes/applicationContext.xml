@@ -1,0 +1,65 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!--扫描包设置-->
+    <context:component-scan base-package="com.go.ym"></context:component-scan>
+
+
+    <!--引入数据库配置文件-->
+    <context:property-placeholder location="config/database.properties"/>
+    <!--配置数据源-->
+    <!--数据源来自dbcp-->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="${driverName}"/>
+        <property name="url" value="${url}"/>
+        <property name="username" value="${user}"/>
+        <property name="password" value="${password}"/>
+        <!--最大连接数据库连接数-->
+        <property name="maxActive"  value="10"/>
+        <!--最大等待连接中的数量-->
+        <property name="maxIdle" value="5"/>
+    </bean>
+
+    <!--配置sqlsessionFactory-->
+    <bean id="sqlsessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--指定mybatis全局配置文件-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <property name="mapperLocations" value="classpath:mappers/*.xml"/>
+        <!--指定数据源-->
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!--声明MyBatis的扫描器，创建Dao接口的实现类对象-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--指定SqlSessionFactory对象，能获取SqlSession-->
+        <property name="sqlSessionFactoryBeanName" value="sqlsessionFactory"/>
+        <!--指定mapper接口的包名,框架会把这个包的所有接口一次创建出mapper-->
+        <property name="basePackage" value="com.go.ym.mapper"/>
+
+    </bean>
+
+
+   <!-- <bean id="studentMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        &lt;!&ndash;指定要映射的mapper接口的全限定名&ndash;&gt;
+        <property name="mapperInterface" value="com.go.ym.mapper.StudentMapper"/>
+        &lt;!&ndash;指定sqlsessionFactory&ndash;&gt;
+        <property name="sqlSessionFactory" ref="sqlsessionFactory"/>
+    </bean>
+
+    &lt;!&ndash;配置账户&ndash;&gt;
+    <bean id="acountMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.go.ym.mapper.AcountMapper"/>
+        <property name="sqlSessionFactory" ref="sqlsessionFactory"/>
+    </bean>-->
+
+        <!--开启事务配置-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <tx:annotation-driven transaction-manager="transactionManager" />
+</beans>

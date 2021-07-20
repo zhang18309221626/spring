@@ -1,0 +1,31 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop" xsi:schemaLocation="
+ http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+ http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--配置接口实现类-->
+    <bean id="orderService" class="com.jy.ym.daoimpl.OrderServiceImple"></bean>
+
+    <!--配置切面类-->
+    <bean id="MyaspectXml" class="com.jy.ym.aop.MyaspectXml"></bean>
+
+    <!--进行aop的配置-->
+    <aop:config>
+        <!--配置切入点表达式：哪些方法需要增强-->
+        <aop:pointcut id="pointcutOne" expression="execution(* com.jy.ym.daoimpl.OrderServiceImple.select())"/>
+        <aop:pointcut id="pointcutTwo" expression="execution(* com.jy.ym.daoimpl.OrderServiceImple.update())"/>
+        <aop:pointcut id="pointcutThree" expression="execution(* com.jy.ym.daoimpl.OrderServiceImple.insert())"/>
+        <aop:pointcut id="pointcutFour" expression="execution(* com.jy.ym.daoimpl.OrderServiceImple.delete())"/>
+        <!--植入切面-->
+        <aop:aspect ref="MyaspectXml">
+            <aop:before method="before" pointcut-ref="pointcutOne"/>
+            <aop:after-returning method="afterReturing" pointcut-ref="pointcutTwo"/>
+            <aop:around method="around" pointcut-ref="pointcutThree"/>
+            <aop:after method="after" pointcut-ref="pointcutFour"/>
+        </aop:aspect>
+    </aop:config>
+</beans>
+

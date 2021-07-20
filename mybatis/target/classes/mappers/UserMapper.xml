@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--根元素-->
+<!--
+    namespace:命名空间，唯一标识当前sql映射文件
+    一般命名方式：包名.文件名
+-->
+<mapper namespace="mappers.UserMapper">
+    <!--
+        查询标签
+            id：唯一标识
+            parameterType:参数类型
+            resultType="Blog"结果类型
+    -->
+    <!--查询-->
+    <select id="queryAll" resultType="com.ym.pojo.User" >
+      select loginName,userName from easybuy_user
+    </select>
+
+    <!--新增-->
+    <insert id="insertOne" parameterType="com.ym.pojo.User">
+        insert into easybuy_user(id,loginName,userName,password,sex) values(#{id},#{loginName},#{userName},#{password},#{sex})
+    </insert>
+
+    <!--更新-->
+    <update id="updateOne" parameterType="com.ym.pojo.User">
+        update easybuy_user set userName=#{userName},password=#{password} where id=#{id}
+    </update>
+
+    <!--删除-->
+    <delete id="deleteOne" parameterType="int">
+        delete from easybuy_user where id=#{id}
+
+    </delete>
+</mapper>

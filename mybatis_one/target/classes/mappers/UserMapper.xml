@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--根元素-->
+<!--
+    namespace:命名空间，唯一标识当前sql映射文件
+    一般命名方式：包名.文件名
+-->
+<mapper namespace="com.yccg.ym.interface_mappers.UserMapper">
+    <!--
+        查询标签
+            id：唯一标识
+            parameterType:参数类型
+            resultType="Blog"结果类型
+    -->
+    <!--根据id查个人信息-->
+    <!-- 一对一级联查询方法一：嵌套查询，执行两个SQL语句 -->
+    <resultMap id="userMap1" type="com.yccg.ym.pojo.User">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+        <association property="idCard" column="idcard_id" javaType="com.yccg.ym.pojo.IdCard" select="com.yccg.ym.interface_mappers.IdCardMapper.selectCodeById"/>
+    </resultMap>
+    <select id="selectUserById1" parameterType="int" resultMap="userMap1">
+        select * from user where id=#{id}
+    </select>
+
+
+    <!--一对一级联查询方法二：连接查询，嵌套结果，执行一个SQL语句-->
+    <resultMap id="userMap2" type="com.yccg.ym.pojo.User">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+        <association property="idCard" javaType="com.yccg.ym.pojo.IdCard">
+            <id property="id" column="idcard_id"/>
+            <result property="code" column="code"/>
+        </association>
+    </resultMap>
+    <select id="selectUserById2" parameterType="int" resultMap="userMap2">
+         select u.*,ic.code from user u,idcard ic where u.idcard_id=ic.id and u.id=#{id}
+    </select>
+
+    <!--一对一级联查询方法三：连接查询，执行一个SQL语句，结果通过实体模型类存储-->
+    <select id="selectUserById3" parameterType="int" resultType="com.yccg.ym.pojo.User">
+         select u.*,ic.code from user u,idcard ic where u.idcard_id=ic.id and u.id=#{id}
+    </select>
+
+    <!-- 一对多查询  根据部门编号查询员工信息 -->
+
+    <select id="getUserByDeptId" parameterType="int" resultType="com.yccg.ym.pojo.User">
+        select * from user where deptid=#{deptid}
+    </select>
+</mapper>

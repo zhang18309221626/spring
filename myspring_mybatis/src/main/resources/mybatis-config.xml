@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!--基础设置-->
+<configuration>
+    <!--mybatis核心配置文件-->
+
+    <!-- 配置mybatis的log实现为LOG4J -->
+    <settings>
+        <setting name="logImpl" value="LOG4J" />
+    </settings>
+
+    <!--给类取别名-->
+    <typeAliases>
+        <typeAlias type="com.go.ym.pojo.Student" alias="student"/>
+    </typeAliases>
+    <!--sql映射文件的加载配置-->
+   <!-- <mappers>
+        &lt;!&ndash;xml是文件,文件不能用点&ndash;&gt;
+        <mapper resource="mappers/StudentMapper.xml"/>
+        <mapper resource="mappers/AcountMapper.xml"/>
+    </mappers>-->
+</configuration>

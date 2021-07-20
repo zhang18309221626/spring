@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.go.ym.mapper.AcountMapper">
+    <!--查询-->
+    <select id="findAcountByName" resultType="com.go.ym.pojo.Acount">
+        select * from acount where name=#{name}
+    </select>
+
+    <!--更新-->
+    <update id="updateAcount" parameterType="com.go.ym.pojo.Acount">
+        update acount set money=#{money} where name=#{name}
+    </update>
+
+</mapper>

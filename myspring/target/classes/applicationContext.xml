@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+<bean id="getPerson" class="com.jy.ym.pojo.Person" scope="singleton" lazy-init="true" init-method="init" destroy-method="destroy">
+
+</bean>
+
+    <!--基础类型值注入用value-->
+    <!--引用类型值注入用ref(references参照)-->
+    <!--走set方法-->
+    <bean id="person1" class="com.jy.ym.pojo.Person">
+        <property name="name" value="林青霞"/>
+        <property name="age" value="27"/>
+        <property name="car" ref="car"/>
+    </bean>
+    <bean id="car" class="com.jy.ym.pojo.Car">
+        <property name="brand" value="mini"/>
+        <property name="color" value="red"/>
+    </bean>
+
+    <!--单个有参构造方法注入-->
+    <bean id="person2" class="com.jy.ym.pojo.Person">
+        <!--按属性名注入-->
+        <constructor-arg name="name" value="李嘉欣"/>
+        <constructor-arg name="age" value="28"/>
+        <constructor-arg name="car" ref="car"/>
+
+    </bean>
+
+    <bean id="person3" class="com.jy.ym.pojo.Person">
+        <!--按参数索引注入,索引从0开始-->
+        <constructor-arg index="0" value="梦可儿"/>
+        <constructor-arg index="1" value="25"/>
+        <constructor-arg index="2" ref="car"/>
+    </bean>
+
+    <bean id="person4" class="com.jy.ym.pojo.Person">
+        <!--按参数索引注入,索引从0开始-->
+        <constructor-arg type="java.lang.String" value="秦可卿"/>
+        <constructor-arg type="java.lang.Integer" value="26"/>
+        <constructor-arg type="com.jy.ym.pojo.Car" ref="car"/>
+    </bean>
+
+    <!--P命名空间注入-->
+    <bean id="person5" class="com.jy.ym.pojo.Person" p:name="李玲月" p:age="29" p:car-ref="car">
+
+    </bean>
+
+    <!--spel注入-->
+    <!--把一个已有类的属性注入进来-->
+    <bean id="person6" class="com.jy.ym.pojo.Person">
+        <property name="name" value="#{person4.name}"/>
+        <property name="age" value="#{person4.age}"/>
+        <property name="car" value="#{person4.car}"/>
+    </bean>
+
+    <!--复杂类型注入-->
+    <!--array，list、map、properties-->
+    <bean id="coll1" class="com.jy.ym.pojo.Collection">
+        <!--注入数组变量-->
+        <property name="array">
+            <array>
+                <value>张国荣</value>
+                <value>张学友</value>
+                <value>张碧晨</value>
+            </array>
+        </property>
+
+        <!--注入list集合变量-->
+        <property name="list">
+            <list>
+                <value>萧薰儿</value>
+                <value>消炎药</value>
+                <ref bean="car"/>
+                <list>
+                    <value>1</value>
+                    <value>12</value>
+                    <value>123</value>
+                </list>
+            </list>
+        </property>
+
+        <!--注入map集合变量-->
+        <property name="map">
+            <map>
+                <entry key="car" value-ref="car"/>
+                <entry key="name" value="囡囡"/>
+                <entry key="age" value="12"/>
+            </map>
+        </property>
+
+        <!--注入properties集合变量-->
+        <property name="properties">
+            <props>
+                <prop key="name">王昭君</prop>
+                <prop key="name1">西施</prop>
+                <prop key="name2">貂蝉</prop>
+                <prop key="name3">杨玉环</prop>
+            </props>
+        </property>
+    </bean>
+
+</beans>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ym.interface_mappers.UserMapper1">
+    <!--不带参数查询-->
+    <select id="queryAll" resultType="com.ym.pojo.User">
+        select loginName,userName from easybuy_user
+    </select>
+
+    <!--带一个参数查询-->
+    <select id="queryUserName" parameterType="int" resultType="com.ym.pojo.User">
+        select userName from easybuy_user where id=#{id}
+    </select>
+
+    <!--带多个参数查询,多个参数,参数类型可以省略-->
+    <select id="queryId" resultType="com.ym.pojo.User">
+        select id from easybuy_user where userName=#{arg0} and loginName=#{arg1}
+    </select>
+
+    <!--添加数据-->
+    <insert id="insertStudent" >
+      insert into student(sid,sname,ssex,sbirthday) values (#{sid},#{sname},#{ssex},#{sbirthday})
+    </insert>
+</mapper>

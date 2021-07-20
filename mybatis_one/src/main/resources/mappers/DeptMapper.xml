@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yccg.ym.interface_mappers.DeptMapper">
+
+    <!--根据id查个人信息-->
+    <!-- 一对多级联查询
+    property：对象属性的名称，对应一对多中一的字段名
+	ofType：指定的是映射到集合属性中bean的类型
+	column：所对应的外键字段名称
+	select：使用另一个查询封装的结果
+    -->
+    <!-- 第一种实现方式 一对多查询 -->
+    <resultMap id="deptMap1" type="com.yccg.ym.pojo.Dept">
+        <id property="deptid" column="did"/>
+        <result property="dname" column="dname"/>
+        <result property="dloc" column="dloc"/>
+        <collection property="emps" column="deptid" ofType="com.yccg.ym.pojo.User">
+            <id property="id" column="uid"/>
+            <result property="name" column="name"/>
+            <result property="age" column="age"/>
+            <association property="idCard" javaType="com.yccg.ym.pojo.IdCard">
+                <id property="id" column="iid"/>
+                <result property="code" column="code"/>
+            </association>
+        </collection>
+    </resultMap>
+    <select id="getAllDept" resultMap="deptMap1">
+        select d.id as did,d.dname,d.dloc,u.id as uid ,u.name,u.age,u.idcard_id,u.deptid,i.id as iid,i.code from dept d left join user u
+        on d.id=u.deptid
+        left join idcard i on u.idcard_id=i.id
+    </select>
+
+    <!-- 第二种方式实现 一对多查询 -->
+    <resultMap id="deptMap2" type="com.yccg.ym.pojo.Dept">
+        <id property="deptid" column="id"/>
+        <result property="dname" column="dname"/>
+        <result property="dloc" column="dloc"/>
+        <association property="emps" column="id" select="com.yccg.ym.interface_mappers.UserMapper.getUserByDeptId"></association>
+    </resultMap>
+    <select id="getAllDept2" resultMap="deptMap2">
+        select * from dept
+    </select>
+</mapper>

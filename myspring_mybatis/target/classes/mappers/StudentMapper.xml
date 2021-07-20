@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--mybatis映射配置-->
+<mapper namespace="com.go.ym.mapper.StudentMapper">
+    <select id="findStudentById" parameterType="int" resultType="student">
+        select * from student where sid=#{id}
+    </select>
+</mapper>

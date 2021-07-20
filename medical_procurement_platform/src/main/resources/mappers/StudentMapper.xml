@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--mybatis映射配置-->
+<mapper namespace="com.ym.dao.StudentDao">
+    <select id="selectStudentById" parameterType="int" resultType="com.ym.pojo.Student">
+      select * from student where sid=#{id}
+    </select>
+
+    <select id="findAll" resultType="com.ym.pojo.Student">
+        select * from student
+    </select>
+
+    <insert id="addStudent" parameterType="com.ym.pojo.Student">
+        insert into student(sname,ssex,sbirthday)values(#{sname},#{ssex},#{sbirthday})
+    </insert>
+
+    <update id="updateStudent" parameterType="com.ym.pojo.Student">
+        update student set sname=#{sname},ssex=#{ssex},sbirthday=#{sbirthday} where sid=#{sid}
+    </update>
+
+    <delete id="deleteStudent" parameterType="int">
+        delete from student where sid=#{sid}
+    </delete>
+</mapper>
